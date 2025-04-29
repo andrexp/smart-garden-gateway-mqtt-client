@@ -271,7 +271,7 @@ fn nng_connect_req0(uri: &str) -> Result<Socket, nng::Error> {
 fn nng_send(socket: &Socket, msg: &NngMsg) -> Result<(), Box<dyn std::error::Error>> {
     let msgs = [msg];
     let tx_str = serde_json::to_string(&msgs)?;
-    debug!("sending msg to socket: {tx_str}")
+    debug!("sending msg to socket: {tx_str}");
     if let Err((_, e)) = socket.send(serde_json::to_string(&msgs)?.as_bytes()) {
         return Err(Box::new(e));
     }
