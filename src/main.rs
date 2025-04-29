@@ -81,10 +81,11 @@ impl NngMsg {
 
 #[tokio::main(worker_threads = 1)]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    info!("sg-mqtt-client started")
     env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
-
+    debug!("loading config file")
     let config = load_config()?;
-
+    
     let nng_req0 = NngReq0 {
         lemonbeatd: nng_connect_req0(LEMONBEATD_COMMAND_URI)?,
         lwm2mserver: nng_connect_req0(LWM2MSERVER_COMMAND_URI)?,
