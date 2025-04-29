@@ -277,7 +277,7 @@ fn nng_send(socket: &Socket, msg: &NngMsg) -> Result<(), Box<dyn std::error::Err
         return Err(Box::new(e));
     }
     let resp = socket.recv()?;
-    debug!("sending msg to socket: {resp:?}");
+    debug!("received response from socket: {resp:?}");
     let resp_str = String::from_utf8_lossy(resp.as_slice());
     let nng_msgs = serde_json::from_str::<Vec<NngMsg>>(&resp_str)?;
     if !nng_msgs
