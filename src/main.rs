@@ -125,7 +125,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 fn load_config() -> Result<Config, Box<dyn std::error::Error>> {
     let mut conf_builder = Config::builder()
-        .set_default("mqtt_broker.host", "localhost")?
+        .set_default("mqtt_broker.host", "192.168.37.254")?
         .set_default("mqtt_broker.port", 1883)?
         .set_default("mqtt_topics.command", "smart-garden/command")?
         .set_default("mqtt_topics.event", "smart-garden/event")?;
