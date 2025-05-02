@@ -229,13 +229,17 @@ async fn mqtt_publish(
     let payload = serde_json::to_string(&nng_msg.payload)?;
     let topic_base = config.get::<String>("mqtt_topics.event")?;
     let mut retained = false;
-    if path.contains("device/0") && payload.contains("device_type"){
-        debug!("Received new startup message. Publishing retained");
+    let mut formatted_topic = format!("{topic_base}/{device}/{path}");
+
+    if path.contains("device") && payload.contains("device_type"){
+        debug!("Received new startup message. Publishing retained discovery message");
+        formatted_topic = format!("{topic_base}/discovery/{device}/{path}");
         retained = true;
     }
+    
     mqtt_client
         .publish(
-            format!("{topic_base}/{device}/{path}"),
+            formatted_topic,
             QoS::ExactlyOnce,
             retained,
             payload.as_bytes(),
