@@ -228,11 +228,16 @@ async fn mqtt_publish(
     let path = &nng_msg.entity.path;
     let payload = serde_json::to_string(&nng_msg.payload)?;
     let topic_base = config.get::<String>("mqtt_topics.event")?;
+    let mut retained = false;
+    if path.contains("device/0") && payload.contains("device_type"){
+        debug!("Received new startup message. Publishing retained");
+        retained = true;
+    }
     mqtt_client
         .publish(
             format!("{topic_base}/{device}/{path}"),
             QoS::ExactlyOnce,
-            false,
+            retained,
             payload.as_bytes(),
         )
         .await?;
